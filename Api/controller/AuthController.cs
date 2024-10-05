@@ -98,7 +98,7 @@ namespace Api.controller
         //        });
         //    }
         //    var roles = await userManager.GetRolesAsync(UserFromDb);
-        //    var token = jwtTokenGenerator.GenerateJwtToken(UserFromDb,roles);
+        //    var token = jwtTokenGenerator.GenerateJwtToken(UserFromDb, roles);
 
         //    return Ok(new ResponceServer
         //    {

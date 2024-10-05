@@ -2,7 +2,7 @@
 
 namespace Api.Model
 {
-    public class AppUser:IdentityUser
+    public class AppUser : IdentityUser
     {
        
 
