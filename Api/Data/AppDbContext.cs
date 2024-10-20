@@ -7,6 +7,8 @@ namespace Api.Data
 {
     public class AppDbContext:IdentityDbContext
     {
+        internal readonly object AppUsers;
+
         public AppDbContext(DbContextOptions options):base(options)
         {
 

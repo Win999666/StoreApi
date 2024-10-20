@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using System.Reflection.Metadata.Ecma335;
+
 
 namespace Api.controller
 {
@@ -79,38 +79,78 @@ namespace Api.controller
             {
                 StatusCode = HttpStatusCode.OK,
                 Result = "регистрация завершена"
+      
             });
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<ResponceServer>> Login([FromBody] LoginReqestDto loginReqestDto)
-        //{
-        //    var UserFromDb = dbContext
-        //        .Users
-        //        .FirstOrDefaultAsync(u => u.Email.ToLower() == loginReqestDto.Email.ToLower());
-        //    if (UserFromDb == null || !await userManager.CheckPasswordAsync(UserFromDb, loginReqestDto.Password))
-        //    {
-        //        return BadRequest(new ResponceServer
-        //        {
-        //            IsSucsesful = false,
-        //            StatusCode = HttpStatusCode.BadRequest,
-        //            ErrorMessages = { "такого пользователя нет" }
-        //        });
-        //    }
-        //    var roles = await userManager.GetRolesAsync(UserFromDb);
-        //    var token = jwtTokenGenerator.GenerateJwtToken(UserFromDb, roles);
+        [HttpPost]
+        public async Task<ActionResult<ResponceServer>> Login([FromBody] LoginReqestDto loginReqestDto)
+        {
+            var UserFromDb = await dbContext
+                .Users
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == loginReqestDto.Email.ToLower());
 
-        //    return Ok(new ResponceServer
-        //    {
-        //        StatusCode = HttpStatusCode.OK,
-        //        Result = new LoginResponceDto
-        //        {
-        //            Email = UserFromDb.Email,
-        //            Token = token
-        //        }
-        //    });
-        //}
+
+            if (UserFromDb == null || !await userManager.CheckPasswordAsync(UserFromDb, loginReqestDto.
+                Password))
+            {
+                return BadRequest(new ResponceServer
+                {
+                    IsSucsesful = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = { "такого пользователя нет" }
+                });
+            }
+            var roles = await userManager.GetRolesAsync(UserFromDb);
+            var token = jwtTokenGenerator.GenerateJwtToken(UserFromDb, roles);
+
+            return Ok(new ResponceServer
+            {
+                StatusCode = HttpStatusCode.OK,
+                Result = new LoginResponceDto
+                {
+                    Email = UserFromDb.Email,
+                    Token = token
+                }
+            });
+        }
     }
+    //    [HttpPost]
+    //    public async Task<ActionResult<ResponceServer>> Login(
+    //          [FromBody] LoginReqestDto loginRequestDto
+    //      )
+    //    {
+    //        var userFromDb = await dbContext
+    //            .Users
+    //            .FirstOrDefaultAsync(u => u.Email.ToLower() ==
+    //                loginRequestDto.Email.ToLower());
+
+    //        if (userFromDb == null
+    //           || !await userManager.CheckPasswordAsync(
+    //                userFromDb, loginRequestDto.Password))
+    //        {
+    //            return BadRequest(new ResponceServer
+    //            {
+    //                IsSucsesful = false,
+    //                StatusCode = HttpStatusCode.BadRequest,
+    //                ErrorMessages = { "Такого пользователя нет" }
+    //            });
+    //        }
+
+    //        var roles = await userManager.GetRolesAsync(userFromDb);
+    //        var token = jwtTokenGenerator.GenerateJwtToken(userFromDb, roles);
+
+    //        return Ok(new ResponceServer
+    //        {
+    //            StatusCode = HttpStatusCode.OK,
+    //            Result = new LoginResponceDto
+    //            {
+    //                Email = userFromDb.Email,
+    //                Token = token,
+    //            }
+    //        });
+    //    }
+    //}
 }
 
 
